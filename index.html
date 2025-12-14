@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>project b - AI-Powered Payroll Automation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0c1a2d 0%, #1a3a5f 100%);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        header {
+            padding: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #4285F4, #34A853, #FBBC05, #EA4335);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 36px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        nav a:hover {
+            color: #fff;
+            background: rgba(66, 133, 244, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .hero {
+            padding: 100px 0 150px;
+            text-align: center;
+            position: relative;
+            z-index: 50;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, #fff 30%, #4285F4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 24px;
+            color: #b0c4de;
+            max-width: 800px;
+            margin: 0 auto 50px;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(90deg, #4285F4, #34A853);
+            color: white;
+            padding: 18px 45px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(66, 133, 244, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(66, 133, 244, 0.6);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 70px;
+            color: #fff;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #4285F4, #34A853);
+            border-radius: 2px;
+        }
+
+        .features {
+            padding: 100px 0;
+            background: rgba(10, 25, 47, 0.7);
+            border-radius: 30px;
+            margin-bottom: 100px;
+            position: relative;
+            z-index: 20;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            transition: all 0.4s;
+            border: 1px solid rgba(66, 133, 244, 0.2);
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(66, 133, 244, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 50px;
+            margin-bottom: 25px;
+            color: #4285F4;
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .feature-card p {
+            color: #b0c4de;
+            line-height: 1.6;
+        }
+
+        .google-cloud-integration {
+            padding: 100px 0;
+            margin-bottom: 100px;
+        }
+
+        .integration-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            margin-top: 60px;
+        }
+
+        .integration-text {
+            flex: 1;
+        }
+
+        .integration-text h3 {
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .integration-text p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #b0c4de;
+            margin-bottom: 25px;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .tech-item {
+            background: rgba(66, 133, 244, 0.1);
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            border: 1px solid rgba(66, 133, 244, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tech-item i {
+            color: #4285F4;
+        }
+
+        .canvas-container {
+            flex: 1;
+            height: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(66, 133, 244, 0.3);
+        }
+
+        footer {
+            padding: 70px 0 40px;
+            background: rgba(5, 15, 30, 0.9);
+            border-top: 1px solid rgba(66, 133, 244, 0.2);
+            margin-top: 100px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #4285F4, #34A853);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .footer-column h4 {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 15px;
+        }
+
+        .footer-column a {
+            color: #b0c4de;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: #4285F4;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #8a9bb2;
+            font-size: 16px;
+        }
+
+        .floating-elements {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @media (max-width: 1024px) {
+            .integration-content {
+                flex-direction: column;
+            }
+            
+            .canvas-container {
+                width: 100%;
+                height: 400px;
+            }
+            
+            .hero h1 {
+                font-size: 48px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Floating Elements -->
+    <div class="floating-elements" id="floatingElements"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-robot"></i>
+                project b
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#integration">Google Cloud</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="https://project-b.us/" target="_blank">Website</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="hero" id="home">
+            <h1>RITA: Your AI Colleague for Payroll Automation</h1>
+            <p>Built on Google Cloud, RITA transforms payroll processing with intelligent automation, ensuring accuracy, compliance, and efficiency for businesses across Germany and the EU.</p>
+            <a href="#integration" class="cta-button">Explore Google Cloud Integration</a>
+        </section>
+
+        <section class="features" id="features">
+            <h2 class="section-title">Our AI-Powered Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Intelligent Data Extraction</h3>
+                    <p>RITA uses AI to convert emails, PDFs, and Excel files into structured, payroll-ready data with 99.5% accuracy.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Automated Data Validation</h3>
+                    <p>Real-time validation identifies incomplete or incorrect entries before they cause payroll errors.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h3>Seamless Integration</h3>
+                    <p>Connect with existing systems like DATEV and agenda through our secure Google Cloud infrastructure.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Smart Workflow Automation</h3>
+                    <p>Automated reminders, checks, and actionable insights keep payroll processes on track and efficient.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="google-cloud-integration" id="integration">
+            <h2 class="section-title">Powered by Google Cloud</h2>
+            <div class="integration-content">
+                <div class="integration-text">
+                    <h3>Enterprise-Grade AI on Google Cloud</h3>
+                    <p>RITA leverages Google Cloud's cutting-edge AI and machine learning services to deliver a secure, scalable, and intelligent payroll automation platform.</p>
+                    <p>Our integration with Google Cloud ensures enterprise-grade security with ISO27001:2022 certification and full GDPR compliance for all payroll data processed within the EU.</p>
+                    <p>With Google Cloud's global infrastructure, RITA provides reliable, high-performance payroll automation for businesses, payroll offices, and tax advisory firms across Germany.</p>
+                    
+                    <div class="tech-stack">
+                        <div class="tech-item">
+                            <i class="fab fa-google"></i> Vertex AI
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-file-contract"></i> Document AI
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-database"></i> BigQuery
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-server"></i> Cloud Run
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-cube"></i> Kubernetes Engine
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-shield-alt"></i> Cloud Security
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas-container" id="canvasContainer">
+                    <!-- 3D Visualization will be rendered here -->
+                </div>
+            </div>
+        </section>
+
+        <footer id="about">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">project b</div>
+                    <p style="color: #b0c4de; margin-top: 20px; max-width: 300px;">
+                        Munich-based AI payroll automation specialists, transforming payroll processing with Google Cloud technology.
+                    </p>
+                    <div style="margin-top: 25px;">
+                        <a href="mailto:zain@project-b.us" style="color: #4285F4; text-decoration: none;">
+                            <i class="fas fa-envelope" style="margin-right: 10px;"></i> zain@project-b.us
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Product</h4>
+                        <ul>
+                            <li><a href="#features">RITA AI Assistant</a></li>
+                            <li><a href="#integration">Google Cloud Integration</a></li>
+                            <li><a href="#features">Features</a></li>
+                            <li><a href="#integration">Security & Compliance</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <ul>
+                            <li><a href="#about">About Us</a></li>
+                            <li><a href="https://project-b.us/" target="_blank">Website</a></li>
+                            <li><a href="#integration">Technology</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="#privacy">Privacy Policy</a></li>
+                            <li><a href="#terms">Terms of Service</a></li>
+                            <li><a href="#compliance">GDPR Compliance</a></li>
+                            <li><a href="#iso">ISO27001:2022</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 project b GmbH. All rights reserved. | Munich, Germany | Google Cloud Build Partner
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 3D Scene Setup
+        let scene, camera, renderer, controls;
+        let floatingObjects = [];
+
+        function init3D() {
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = null;
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(75, 
+                document.getElementById('canvasContainer').offsetWidth / 
+                document.getElementById('canvasContainer').offsetHeight, 
+                0.1, 1000);
+            camera.position.z = 15;
+            camera.position.y = 5;
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(
+                document.getElementById('canvasContainer').offsetWidth,
+                document.getElementById('canvasContainer').offsetHeight
+            );
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.getElementById('canvasContainer').appendChild(renderer.domElement);
+
+            // Orbit Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableZoom = true;
+            controls.enablePan = false;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 0.5;
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0x4285F4, 1);
+            directionalLight.position.set(5, 10, 7);
+            scene.add(directionalLight);
+
+            const pointLight = new THREE.PointLight(0x34A853, 0.8, 100);
+            pointLight.position.set(-5, -5, 5);
+            scene.add(pointLight);
+
+            // Create floating 3D objects representing Google Cloud services
+            createFloatingObjects();
+            
+            // Handle window resize
+            window.addEventListener('resize', onWindowResize);
+        }
+
+        function createFloatingObjects() {
+            const geometryTypes = [
+                new THREE.BoxGeometry(1, 1, 1),
+                new THREE.SphereGeometry(0.8, 32, 32),
+                new THREE.ConeGeometry(0.8, 1.5, 32),
+                new THREE.CylinderGeometry(0.7, 0.7, 1.2, 32),
+                new THREE.TorusGeometry(0.8, 0.3, 16, 100),
+                new THREE.OctahedronGeometry(0.9)
+            ];
+
+            const colors = [0x4285F4, 0x34A853, 0xFBBC05, 0xEA4335, 0x8AB4F8, 0x81C995];
+
+            for (let i = 0; i < 12; i++) {
+                const geometry = geometryTypes[Math.floor(Math.random() * geometryTypes.length)];
+                const material = new THREE.MeshPhongMaterial({
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    shininess: 100,
+                    transparent: true,
+                    opacity: 0.8
+                });
+
+                const object = new THREE.Mesh(geometry, material);
+                
+                // Random position
+                object.position.x = (Math.random() - 0.5) * 20;
+                object.position.y = (Math.random() - 0.5) * 10;
+                object.position.z = (Math.random() - 0.5) * 20;
+                
+                // Random rotation
+                object.rotation.x = Math.random() * Math.PI;
+                object.rotation.y = Math.random() * Math.PI;
+                
+                // Random size
+                const scale = 0.5 + Math.random() * 0.8;
+                object.scale.set(scale, scale, scale);
+                
+                // Store animation properties
+                object.userData = {
+                    speed: 0.2 + Math.random() * 0.3,
+                    rotationSpeedX: (Math.random() - 0.5) * 0.02,
+                    rotationSpeedY: (Math.random() - 0.5) * 0.02,
+                    rotationSpeedZ: (Math.random() - 0.5) * 0.02,
+                    floatSpeed: 0.5 + Math.random() * 0.5,
+                    floatAmplitude: 0.2 + Math.random() * 0.3,
+                    originalY: object.position.y
+                };
+                
+                scene.add(object);
+                floatingObjects.push(object);
+            }
+
+            // Add central RITA logo representation
+            const logoGeometry = new THREE.IcosahedronGeometry(2, 1);
+            const logoMaterial = new THREE.MeshPhongMaterial({
+                color: 0x4285F4,
+                shininess: 120,
+                transparent: true,
+                opacity: 0.9,
+                wireframe: false
+            });
+            const logo = new THREE.Mesh(logoGeometry, logoMaterial);
+            logo.position.y = 0;
+            logo.userData = {
+                speed: 0.1,
+                rotationSpeedX: 0.005,
+                rotationSpeedY: 0.01,
+                rotationSpeedZ: 0.003,
+                floatSpeed: 0.3,
+                floatAmplitude: 0.5,
+                originalY: 0
+            };
+            scene.add(logo);
+            floatingObjects.push(logo);
+        }
+
+        function animateFloatingObjects() {
+            const time = Date.now() * 0.001;
+
+            floatingObjects.forEach(object => {
+                // Rotation
+                object.rotation.x += object.userData.rotationSpeedX;
+                object.rotation.y += object.userData.rotationSpeedY;
+                object.rotation.z += object.userData.rotationSpeedZ;
+                
+                // Floating motion
+                object.position.y = object.userData.originalY + 
+                    Math.sin(time * object.userData.floatSpeed) * object.userData.floatAmplitude;
+                
+                // Gentle orbit
+                object.position.x += Math.cos(time * object.userData.speed * 0.5) * 0.01;
+                object.position.z += Math.sin(time * object.userData.speed * 0.5) * 0.01;
+            });
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            animateFloatingObjects();
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            camera.aspect = document.getElementById('canvasContainer').offsetWidth / 
+                           document.getElementById('canvasContainer').offsetHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(
+                document.getElementById('canvasContainer').offsetWidth,
+                document.getElementById('canvasContainer').offsetHeight
+            );
+        }
+
+        // Simple floating elements for background
+        function createBackgroundElements() {
+            const container = document.getElementById('floatingElements');
+            const colors = ['#4285F4', '#34A853', '#FBBC05', '#EA4335'];
+            
+            for (let i = 0; i < 20; i++) {
+                const element = document.createElement('div');
+                element.style.position = 'absolute';
+                element.style.width = Math.random() * 40 + 10 + 'px';
+                element.style.height = element.style.width;
+                element.style.background = colors[Math.floor(Math.random() * colors.length)];
+                element.style.borderRadius = '50%';
+                element.style.opacity = Math.random() * 0.1 + 0.05;
+                element.style.left = Math.random() * 100 + 'vw';
+                element.style.top = Math.random() * 100 + 'vh';
+                element.style.filter = 'blur(10px)';
+                container.appendChild(element);
+                
+                // Animate
+                animateElement(element);
+            }
+        }
+
+        function animateElement(element) {
+            let x = parseFloat(element.style.left);
+            let y = parseFloat(element.style.top);
+            let xSpeed = (Math.random() - 0.5) * 0.2;
+            let ySpeed = (Math.random() - 0.5) * 0.2;
+            
+            function move() {
+                x += xSpeed;
+                y += ySpeed;
+                
+                if (x > 100) x = 0;
+                if (x < 0) x = 100;
+                if (y > 100) y = 0;
+                if (y < 0) y = 100;
+                
+                element.style.left = x + 'vw';
+                element.style.top = y + 'vh';
+                
+                requestAnimationFrame(move);
+            }
+            move();
+        }
+
+        // Initialize everything when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            init3D();
+            animate();
+            createBackgroundElements();
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
